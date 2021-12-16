@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\TestEvent;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +20,11 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('/emit/{message}', function ($message) {
-    event(new \App\Events\TestEvent($message));
+    event(new TestEvent($message));
 });
 
 Route::get('/login/{id}', function ($id) {
-    $user = auth()->loginUsingId($id);
+    $user = Auth::loginUsingId($id);
     if ($user) {
         echo '<pre>';
         print_r($user->toArray());
@@ -31,4 +33,9 @@ Route::get('/login/{id}', function ($id) {
     } else {
         echo '登录失败';
     }
+});
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/');
 });

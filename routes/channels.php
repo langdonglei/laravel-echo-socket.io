@@ -18,6 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('ch5', function ($a) {
-    file_put_contents('abc.txt', (new ReflectionClass($a))->getName());
+    file_put_contents('abc1.txt', (new ReflectionClass($a))->getName());
     return true;
 });
