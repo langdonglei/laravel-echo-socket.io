@@ -1,5 +1,7 @@
-## 设置环境变量
-- .env 文件中修改
+## 修改配置文件
+
+.env 文件中修改:
+
 - BROADCAST_DRIVER=redis
 - QUEUE_CONNECTION=sync
 - redis的主机端口密码
@@ -8,17 +10,21 @@
 
 队列驱动可以选择redis 这里我为了不开启队列 所以选择同步
 
-## 前端添加依赖
+如果要发送私有广播还需要(公共广播可免操作):
 
-- npm install laravel-echo@2 socket.io-client@2 --save-dev
+- config/app.php 文件中取消注释-> App\Providers\EventServiceProvider::class (此服务提供者自动注册了一个路由 broadcasting/auth)
+- routes/channels.php 文件中用 channel() 方法 对指定频道进行是否发送的逻辑判断 (只有开启了上一步的服务提供者才能生效)
 
-也可以不添加
+## 前端依赖
 
-那么就必须在使用页面的时候 通过cdn引入 或者 服务端自动提供的 /socket.io/socket.io.js
+- npm install laravel-echo@2 --save-dev
+- npm install socket.io-client@2 --save-dev
+
+也可以不添加 那么就必须在使用页面的时候 通过cdn引入 或者 服务端自动提供的 /socket.io/socket.io.js
 
 一定要注意版本 服务端用的什么版本的socket.io 客户端应该引入与之对应的大版本 socket.io-client
 
-## 前端引入并设置
+## 前端设置
 
 - resources/js/bootstrap.js
 
@@ -26,11 +32,11 @@
 
 - resources/views/welcome.blade.php
 
-## 前端安装其他依赖并编译
+## 前端运行
 
 - npm install && npm run watch
 
-## 服务端安装依赖
+## 服务端依赖
 
 - npm install laravel-echo-server --save
 
@@ -42,13 +48,19 @@
 
 但大家都用它 github 开源的
 
-## 服务端初始化
+## 服务端设置
 
 - npx laravel-echo-server init
 
-一路回车 反正还得看着配置文件修改 "devMode": false 如果使用的 redis 不是本机或者有密码 还得修改 "redis": {"host":"xxx","password":"xxx"}
+一路回车 反正还得看着配置文件修改
 
-## 运行服务端
+"devMode": false 打开调试模式 服务端在收到事件的时候会打印 如果是私有广播 鉴权失败的时候也会打印一些信息
+
+如果使用的 redis 不是本机或者有密码 还得修改 "redis": {"host":"xxx","password":"xxx"}
+
+如果发送私有广播 authHost 字段必须填写正确 框架在鉴权的时候会在这个主机名上自动加上 前面服务提供者注册的路由地址
+
+## 服务端运行
 
 - npx laravel-echo-server start
 

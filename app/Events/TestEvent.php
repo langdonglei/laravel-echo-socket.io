@@ -33,6 +33,6 @@ class TestEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('ch3');
+        return new PrivateChannel('ch5');
     }
 }
