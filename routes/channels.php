@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -17,7 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int)$user->id === (int)$id;
 });
 
-Broadcast::channel('ch5', function ($a) {
-    file_put_contents('abc1.txt', (new ReflectionClass($a))->getName());
+Broadcast::channel('ch5', function (User $user) {
     return true;
 });

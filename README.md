@@ -13,7 +13,7 @@
 如果要发送私有广播还需要(公共广播可免操作):
 
 - config/app.php 文件中取消注释-> App\Providers\EventServiceProvider::class (此服务提供者自动注册了一个路由 broadcasting/auth)
-- routes/channels.php 文件中用 channel() 方法 对指定频道进行是否发送的逻辑判断 (只有开启了上一步的服务提供者才能生效)
+- (只有开启了上一步的服务提供者才能生效) routes/channels.php 文件中用 channel() 方法 对指定频道是否允许 socket 连接的逻辑判断 参数2是一个回调函数 函数的参数只有一个 框架用于鉴权的用户表实例
 
 ## 前端依赖
 
@@ -58,7 +58,7 @@
 
 如果使用的 redis 不是本机或者有密码 还得修改 "redis": {"host":"xxx","password":"xxx"}
 
-如果发送私有广播 authHost 字段必须填写正确 框架在鉴权的时候会在这个主机名上自动加上 前面服务提供者注册的路由地址
+如果发送私有广播 authHost 字段必须填写正确 框架会在socket连接的时候鉴权 鉴权的地址就是 这个主机名上 加上 前面服务提供者注册的路由
 
 ## 服务端运行
 
